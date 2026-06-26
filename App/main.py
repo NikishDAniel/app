@@ -1,5 +1,5 @@
 import mysql.connector
-from 
+from PIL import Image
 from kivymd.app import MDApp
 from kivymd.uix.recycleview import MDRecycleView
 from kivymd.uix.card import MDCard
