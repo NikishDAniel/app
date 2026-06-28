@@ -1,5 +1,6 @@
 import mysql.connector
 from PIL import Image
+from io import BytesIO
 from kivymd.app import MDApp
 from kivymd.uix.recycleview import MDRecycleView
 from kivymd.uix.card import MDCard
@@ -13,8 +14,15 @@ from kivymd.uix.floatlayout import MDFloatLayout
 from kivymd.uix.fitimage import FitImage
 from kivymd.uix.filemanager import MDFileManager
 
+def fetchData():
+    connection = mysql.connector.connect(host='127.0.0.1',user='root',password='Nikish@2003',database='pentecostmatrimony')
+    cursor = connection.cursor()
+    cursor.execute('''select * from userData''')
+    print(cursor.fetchone()[3:])
+    cursor.close()
+
 def scrollableWidget():
-    scrollable = MDRecycleView(size_hint=(1,1),pos_hint={"center_x":0.5,"center_y":0.5})
+    scrollable = MDRecycleView(pos_hint={"center_x":0.5,"center_y":0.5})
     scrollableFrame = MDBoxLayout(orientation="vertical",adaptive_height=True,spacing="10dp",padding="10dp")
     scrollable.add_widget(scrollableFrame)
     return scrollable,scrollableFrame
@@ -23,8 +31,10 @@ class AdminScreen(MDScreen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         layout = MDFloatLayout()
-        scroll , scrollFrame = scrollableWidget()
-        layout.add_widget(scroll)
+        layout.add_widget(MDRaisedButton(text='Fetch',on_release=lambda x:fetchData()))
+        # MDFileManager()
+        # scroll , scrollFrame = scrollableWidget()
+        # layout.add_widget(scroll)
         self.add_widget(layout)
 
 class HomeScreen(MDScreen):
