@@ -32,6 +32,7 @@ class AdminScreen(MDScreen):
         super().__init__(**kwargs)
         layout = MDFloatLayout()
         layout.add_widget(MDRaisedButton(text='Fetch',on_release=lambda x:fetchData()))
+        layout.add_widget(MDRaisedButton(text='Back',on_release=lambda x:setattr(self.manager,"current","login"),pos_hint={"center_x":0.5,"center_y":0.1}))
         # MDFileManager()
         # scroll , scrollFrame = scrollableWidget()
         # layout.add_widget(scroll)
