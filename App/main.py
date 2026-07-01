@@ -2,6 +2,7 @@ import mysql.connector
 from PIL import Image
 from io import BytesIO
 from kivymd.app import MDApp
+from kivymd.uix.imagelist import imagelist
 from kivymd.uix.recycleview import MDRecycleView
 from kivymd.uix.card import MDCard
 from kivymd.uix.screen import MDScreen
@@ -33,7 +34,9 @@ class AdminScreen(MDScreen):
         layout = MDFloatLayout()
         layout.add_widget(MDRaisedButton(text='Fetch',on_release=lambda x:fetchData()))
         layout.add_widget(MDRaisedButton(text='Back',on_release=lambda x:setattr(self.manager,"current","login"),pos_hint={"center_x":0.5,"center_y":0.1}))
-        # MDFileManager()
+        fileManager = MDFileManager()
+        fileManager.show('/')
+        print(fileManager.select_path)
         # scroll , scrollFrame = scrollableWidget()
         # layout.add_widget(scroll)
         self.add_widget(layout)
@@ -73,4 +76,4 @@ class MainApp(MDApp):
         sm.add_widget(AdminScreen(name="admin"))
         return sm
 
-MainApp().run() 
+MainApp().run()
