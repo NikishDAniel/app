@@ -1,4 +1,5 @@
 from kivymd.app import MDApp
+from kivy.animation import Animation
 from kivymd.uix.button import MDRaisedButton
 from kivy.uix.screenmanager import NoTransition , ScreenManager
 from kivymd.uix.card import MDCard
