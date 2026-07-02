@@ -2,6 +2,8 @@ import mysql.connector
 from PIL import Image
 from io import BytesIO
 from kivymd.app import MDApp
+from kivy.uix.stencilview import StencilView
+from kivymd.
 from kivymd.uix.imagelist import imagelist
 from kivymd.uix.recycleview import MDRecycleView
 from kivymd.uix.card import MDCard
@@ -28,6 +30,14 @@ def scrollableWidget():
     scrollableFrame = MDBoxLayout(orientation="vertical",adaptive_height=True,spacing="10dp",padding="10dp")
     scrollable.add_widget(scrollableFrame)
     return scrollable,scrollableFrame
+
+class tryScreen(MDScreen):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        layout = MDFloatLayout()
+        layout.add_widget(MDRaisedButton(text='Back',on_release=lambda x:setattr(self.manager,"current","login"),pos_hint={'center_x':0.1,'top':0.1}))
+        layout.add_widget(StencilView(size_hint=(0.8,0.8),pos_hint={'center_x':0.5,'center_y':0.5}))
+        self.add_widget(layout)
 
 class AdminScreen(MDScreen):
     def __init__(self, **kwargs):
@@ -64,6 +74,7 @@ class LoginScreen(MDScreen):
         card.add_widget(emailWidget);card.add_widget(passwordWidget)
         card.add_widget(MDRaisedButton(text="Login",on_release=lambda x:setattr(self.manager,"current","home")))
         card.add_widget(MDRaisedButton(text="Admin",on_release=lambda x:setattr(self.manager,"current","admin")))
+        layout.add_widget(MDRaisedButton(text='Try',on_release=lambda x:setattr(self.manager,"current","try")))
         layout.add_widget(card)
         self.add_widget(layout)
 
@@ -74,6 +85,7 @@ class MainApp(MDApp):
         sm.add_widget(LoginScreen(name="login"))
         sm.add_widget(HomeScreen(name="home"))
         sm.add_widget(AdminScreen(name="admin"))
+        sm.add_widget(tryScreen(name="try"))
         return sm
 
 MainApp().run()
