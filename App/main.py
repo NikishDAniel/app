@@ -2,10 +2,12 @@ import mysql.connector
 from PIL import Image
 from io import BytesIO
 from kivymd.app import MDApp
+from kivy.metrics import dp
 from kivy.uix.stencilview import StencilView
 from kivy.animation import Animation
 from kivymd.uix.imagelist import imagelist
 from kivymd.uix.recycleview import MDRecycleView
+from kivy.uix.recycleview.views import RecycleDataViewBehavior
 from kivymd.uix.recyclegridlayout import MDRecycleGridLayout
 from kivymd.uix.card import MDCard
 from kivymd.uix.screen import MDScreen
@@ -50,14 +52,28 @@ class FormScreen(MDScreen):
         layout = MDFloatLayout()
         layout.add_widget(MDTopAppBar(title='User Form',pos_hint={'top':1},left_action_items=[['arrow-left',lambda x:setattr(self.manager,'current','home')]]))
         layout.add_widget(userForm())
-        self.add_widget(layout)   
+        self.add_widget(layout)
+        
+class CardItem(RecycleDataViewBehavior,MDCard):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.orientation = 'vertical'
+        self.size_hint = (None, None)
+        self.size = (dp(150), dp(150))
+        self.md_bg_color = (0, 0, 0, 0.3)
 
 class TryScreen(MDScreen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         layout = MDFloatLayout()
         layout.add_widget(MDRaisedButton(text='Back',on_release=lambda x:setattr(self.manager,'current','login'),pos_hint={'center_x':0.1,'top':0.1}))
-        layout.add_widget(StencilView(size_hint=(0.8,0.8),pos_hint={'center_x':0.5,'center_y':0.5}))
+        scrollableFrame = MDRecycleView();gridScroll = MDRecycleGridLayout(cols=3,spacing=dp(10),padding=dp(10))
+        gridScroll.bind(minimum_height=gridScroll.setter('height'))
+        scrollableFrame.add_widget(gridScroll)
+        scrollableFrame.layout_manager = gridScroll
+        scrollableFrame.data = [{"md_bg_color": (0, 0, 0, 0.3)} for _ in range(100)]
+        scrollableFrame.viewclass = CardItem
+        layout.add_widget(scrollableFrame)
         self.add_widget(layout)
 
 class AdminScreen(MDScreen):
@@ -76,18 +92,15 @@ class HomeScreen(MDScreen):
         toolbar = MDTopAppBar(title='Pentacostal Matrimony',pos_hint={'top': 1},left_action_items=[['menu',lambda x:print('Menu')]],
                 right_action_items=[['magnify',lambda x:print('Search')],['account',lambda x:setattr(self.manager,'current','form')]],)
         layout = MDFloatLayout()
-        bg = FitImage(source='icons&Images/userbg.png',size_hint=(1,1))
-        layout.add_widget(bg);layout.add_widget(toolbar)
-        btn = MDRaisedButton(text='Back',on_release=lambda x:setattr(self.manager,'current','login'),pos_hint={'center_x':0.5,'center_y':0.1})
-        layout.add_widget(btn)
-        scrollableFrame = MDRecycleView()
-        gridScroll = MDRecycleGridLayout(cols=3,spacing='10dp',pos_hint={'x':0.1,'y':0.1})
-        gridScroll.bind(minimum_height=gridScroll.setter('height'))
-        scrollableFrame.add_widget(gridScroll)
-        scrollableFrame.layout_manager = gridScroll
-        scrollableFrame.data = [{"md_bg_color": (0, 0, 0, 0.3)} for _ in range(100)]
-        scrollableFrame.viewclass = 'MDCard'
-        layout.add_widget(scrollableFrame)
+        layout.add_widget(FitImage(source='icons&Images/userbg.png',size_hint=(1,1)));layout.add_widget(toolbar)
+        layout.add_widget(MDRaisedButton(text='Back',on_release=lambda x:setattr(self.manager,'current','login'),pos_hint={'center_x':0.5,'center_y':0.1}))
+        # scrollableFrame = MDRecycleView();gridScroll = MDRecycleGridLayout(cols=3,spacing=dp(10),padding=dp(10))
+        # gridScroll.bind(minimum_height=gridScroll.setter('height'))
+        # scrollableFrame.add_widget(gridScroll)
+        # scrollableFrame.layout_manager = gridScroll
+        # scrollableFrame.data = [{"md_bg_color": (0, 0, 0, 0.3)} for _ in range(100)]
+        # scrollableFrame.viewclass = 'MDCard'
+        # layout.add_widget(scrollableFrame)
         self.add_widget(layout)
 
 class LoginScreen(MDScreen):
