@@ -59,7 +59,7 @@ class CardItem(RecycleDataViewBehavior,MDCard):
         super().__init__(**kwargs)
         self.orientation = 'vertical'
         self.size_hint = (None, None)
-        self.size = (dp(150), dp(150))
+        self.size = (dp(150),dp(150))
         self.md_bg_color = (0, 0, 0, 0.3)
 
 class TryScreen(MDScreen):
